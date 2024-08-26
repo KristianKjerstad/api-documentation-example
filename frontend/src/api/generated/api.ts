@@ -88,6 +88,19 @@ export type IngredientCategories = typeof IngredientCategories[keyof typeof Ingr
 /**
  * 
  * @export
+ * @interface NotFoundResponse
+ */
+export interface NotFoundResponse {
+    /**
+     * 
+     * @type {string}
+     * @memberof NotFoundResponse
+     */
+    'message': string;
+}
+/**
+ * 
+ * @export
  * @interface Recipe
  */
 export interface Recipe {

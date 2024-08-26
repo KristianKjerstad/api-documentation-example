@@ -1,13 +1,14 @@
 from typing import List
 from uuid import UUID
-
-from fastapi import APIRouter, Depends
+from pydantic import BaseModel
+from fastapi import APIRouter, Depends, HTTPException, Response
 from resources.recipe.entities.recipe import Recipe, RecipeCategories
 from resources.recipe.use_cases.get_all_recipes_use_case import get_all_recipes_use_case
 from resources.recipe.use_cases.get_one_recipe_use_case import get_one_recipe_use_case
-
 router = APIRouter(tags=["recipes"], prefix="/recipes")
 
+class NotFoundResponse(BaseModel):
+    message: str
 
 @router.get(
     "",
@@ -23,6 +24,15 @@ async def get_all(category: RecipeCategories = None) -> List[Recipe]:
         return all_recipes
 
 
-@router.get("/{id}")
+@router.get("/{id}", status_code=200, responses={
+    404: {
+        "description": "Recipe not found",
+        "model": NotFoundResponse,
+       
+    }
+})
 async def get_one(id: UUID) -> Recipe:
-    return get_one_recipe_use_case(id=id)
+    recipe =  get_one_recipe_use_case(id=id)
+    if recipe is None:
+        raise HTTPException(status_code=404, detail={"message": "Recipe not found"})
+    return recipe
