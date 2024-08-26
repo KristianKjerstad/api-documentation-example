@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+    backend:
+        build: .
+        image: recipe-app-api
+        restart: unless-stopped
+        volumes:
+            - ./src:/app/src
+        ports:
+            - '5000:5000'
+
+volumes:
+    postgres_data:
