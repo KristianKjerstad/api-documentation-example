@@ -8,9 +8,8 @@ from resources.recipe import recipe_resource
 app = FastAPI()
 
 origins = [
-    "https://recipe-app-frontend-ochre.vercel.app",
     "http://localhost",
-    "http://localhost:5173",
+    "http://localhost:3000",
 ]
 app.add_middleware(
     CORSMiddleware,
